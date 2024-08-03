@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:news_app/Config/Colors.dart';
+import 'package:get/get.dart';
 
 class TrendingCard extends StatelessWidget {
   final String title;
@@ -7,7 +7,10 @@ class TrendingCard extends StatelessWidget {
   final String trending;
   final String author;
   final String source;
-  final String image;
+  final String? image;
+  final String url;
+  final String? category;
+  final String? sourceIcon;
 
   TrendingCard({
     required this.title,
@@ -15,35 +18,103 @@ class TrendingCard extends StatelessWidget {
     required this.trending,
     required this.author,
     required this.source,
-    required this.image,
+    this.image,
+    required this.url,
+    required this.category,
+    required this.sourceIcon,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("Image : $image");
     return Container(
-      width: 250,
-      margin: EdgeInsets.all(10),
+      width: 270,
+      height: 301,
+      margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(23),
+        boxShadow: [
+          Theme.of(context).brightness == Brightness.light
+              ? BoxShadow(
+                  color: Colors.black.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 3,
+                  offset: Offset(
+                      0, 3), // Adjusted shadow offset for a more natural look
+                )
+              : BoxShadow(
+                  color: Colors.white.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(
+                      -1, -2), // Adjusted shadow offset for a more natural look
+                ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: EdgeInsets.fromLTRB(5, 5, 5, 0),
-            height: 150,
-            width: double.infinity,
-            child: ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(10)),
-              child: Image.network(
-                image,
-                fit: BoxFit.cover,
+          Stack(
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(3, 3, 3, 0),
+                height: 170,
+                width: double.infinity,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: image != null &&
+                          image != 'https://via.placeholder.com/150'
+                      ? Image.network(
+                          image!,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) => Center(
+                              child: Image.asset(
+                                  'assets/Photos/breaking_news.png',
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      Center(
+                                          child: Icon(Icons
+                                              .error)))), // Display error icon if the network image fails
+                        )
+                      : Image.asset(
+                          'assets/Photos/breaking_news.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) => Center(
+                              child: Icon(Icons
+                                  .error)), // Display error icon if the asset image fails
+                        ),
+                ),
               ),
-            ),
+              if (category != null && category!.isNotEmpty)
+                Positioned(
+                  top: 10,
+                  left: 10,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      category!.capitalize!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
           ),
           Padding(
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.fromLTRB(8, 8, 8, 0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -60,15 +131,15 @@ class TrendingCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: 8),
+                SizedBox(height: 5),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.bodyMedium,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),
-                SizedBox(height: 8),
                 ListTile(
+                  contentPadding: EdgeInsets.zero,
                   title: Text(
                     "$author From $source",
                     overflow: TextOverflow.ellipsis,
@@ -76,10 +147,13 @@ class TrendingCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                   leading: CircleAvatar(
-                    backgroundImage: AssetImage('assets/Photos/Profile.png'),
+                    backgroundImage:
+                        sourceIcon != null && sourceIcon!.isNotEmpty
+                            ? NetworkImage(sourceIcon!)
+                            : AssetImage('assets/Photos/Profile.png'),
                     radius: 12,
                   ),
-                  minLeadingWidth: 5,
+                  minLeadingWidth: 7,
                 ),
               ],
             ),

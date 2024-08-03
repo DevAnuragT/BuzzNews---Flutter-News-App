@@ -10,8 +10,8 @@ class Navigationbar extends StatelessWidget {
     BottomNavController controller = Get.put(BottomNavController());
 
     return Positioned(
-      left: 50,
-      right: 50,
+      left: 45,
+      right: 45,
       bottom: 18,
       child: Container(
         margin: EdgeInsets.all(10),
@@ -20,15 +20,15 @@ class Navigationbar extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.5),
+              color: Colors.black.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 0),
+              offset: Offset(0, 3), // Adjusted shadow offset for a more natural look
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(20),
           child: Obx(() => BottomNavigationBar(
             items: const <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -50,6 +50,7 @@ class Navigationbar extends StatelessWidget {
             onTap: (index) {
               controller.index.value = index;
             },
+            //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             backgroundColor: Theme.of(context).colorScheme.surface,
             selectedIconTheme: IconThemeData(size: 30), // Increase size when selected
             showSelectedLabels: false,

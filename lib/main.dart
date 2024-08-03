@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:news_app/Config/Theme.dart';
 import 'package:news_app/Controller/BottomNavigation.dart';
 import 'package:news_app/HomePageController.dart';
-import 'package:news_app/screens/home_page/home.dart';
 
 void main() {
   runApp(const MyApp());

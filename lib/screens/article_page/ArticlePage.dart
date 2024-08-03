@@ -13,11 +13,11 @@ class ArticlePage extends StatelessWidget {
             Container(
                 padding: EdgeInsets.all(20),
                 child: Text(
-                  'Articles',
+                  'Feed',
                   style: Theme.of(context)
                       .textTheme
                       .headlineLarge!
-                      .copyWith(fontSize: 35),
+                      .copyWith(fontSize: 35, letterSpacing: 2.0),
                 ))
           ],
         ),

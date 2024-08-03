@@ -35,9 +35,10 @@ var lightTheme = ThemeData(
     ),
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        fontFamily: "Poppins",
+        fontFamily: "SFRounded",
         fontSize: 24,
         color: lightFontColor,
+        letterSpacing: 1.5,
         fontWeight: FontWeight.w700,
       ),
       headlineMedium: TextStyle(
@@ -60,14 +61,14 @@ var lightTheme = ThemeData(
       ),
       bodyMedium: TextStyle(
         fontFamily: "Poppins",
-        fontSize: 13,
+        fontSize: 15,
         color: lightLableColor,
         fontWeight: FontWeight.w400,
       ),
       bodySmall: TextStyle(
         fontFamily: "Poppins",
         fontSize: 13,
-        color: lightFontColor,
+        color: lightLableColor,
         fontWeight: FontWeight.w500,
       ),
       labelSmall: TextStyle(
@@ -123,7 +124,7 @@ var darkTheme = ThemeData(
     ),
     textTheme: const TextTheme(
       headlineLarge: TextStyle(
-        fontFamily: "Poppins",
+        fontFamily: "SFRounded",
         fontSize: 24,
         color: darkFontColor,
         fontWeight: FontWeight.w700,

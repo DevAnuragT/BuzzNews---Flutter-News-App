@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:news_app/Controller/NewsController.dart';
 import 'package:news_app/screens/home_page/widgets/NewsTile.dart';
+import 'package:news_app/screens/home_page/widgets/SearchWidget.dart';
 import 'package:news_app/screens/home_page/widgets/TrendingCard.dart';
-import 'package:news_app/Components/NavigationBar.dart';
+import '../../Controller/NewsController.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  @override
   Widget build(BuildContext context) {
+    NewsController2 newsController = Get.put(NewsController2());
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: SafeArea(
@@ -25,35 +25,69 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 35),
-                      child: Text('Welcome to',
-                          style: Theme.of(context).textTheme.bodyLarge),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Icon(Icons.dashboard_rounded),
+                        ),
+                        Container(
+                          width: 45,
+                          height: 45,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                          child: Icon(Icons.person_2_rounded),
+                        ),
+                      ],
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 5, 12, 12),
+                      padding: const EdgeInsets.only(top: 22),
+                      child: Text('Welcome to,',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(
+                                  fontFamily: "SFRounded",
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 18)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 12, 12),
                       child: Text(
                         'BuzzNews',
                         textAlign: TextAlign.left,
                         style:
                             Theme.of(context).textTheme.headlineLarge!.copyWith(
+                                  fontFamily: 'SFRounded',
+                                  fontWeight: FontWeight.w900,
                                   fontSize: 50,
+                                  letterSpacing: 2.0,
                                   color: Theme.of(context).colorScheme.primary,
                                 ),
                       ),
                     ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                    //SizedBox(height: 5),
+                    SearchWidget(),
+                    SizedBox(height: 15),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Top News',
+                          'Hottest News',
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
-                              ?.copyWith(fontSize: 18),
+                              ?.copyWith(fontSize: 20),
                         ),
                         Text(
                           'See more',
@@ -68,39 +102,29 @@ class _HomePageState extends State<HomePage> {
                 children: [
                   SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: [
-                        TrendingCard(
-                            title: 'First News',
-                            time: '1 min ago',
-                            trending: '2',
-                            author: "Anurag",
-                            source: 'IIITM',
-                            image:
-                                'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg'),
-                        TrendingCard(
-                            title: 'First News',
-                            time: '1 min ago',
-                            trending: '2',
-                            author: "Anurag",
-                            source: 'IIITM',
-                            image:
-                                'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg'),
-                        TrendingCard(
-                            title: 'First News',
-                            time: '1 min ago',
-                            trending: '2',
-                            author: "Anurag",
-                            source: 'IIITM',
-                            image:
-                                'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg'),
-                      ],
+                    child: Obx(
+                      () => Row(
+                          children: newsController.trendingNewsList
+                              .map(
+                                (e) => TrendingCard(
+                                  title: e.title!,
+                                  time: e.publishDate!,
+                                  trending: '1',
+                                  author: e.author!,
+                                  source: e.source!,
+                                  image: e.imageUrl,
+                                  url: e.url!,
+                                  category: e.category,
+                                  sourceIcon: e.sourceIcon,
+                                ),
+                              )
+                              .toList()),
                     ),
                   ),
                 ],
               ),
               Padding(
-                padding: EdgeInsets.all(15),
+                padding: const EdgeInsets.all(15),
                 child: Column(
                   children: [
                     Row(
@@ -114,30 +138,20 @@ class _HomePageState extends State<HomePage> {
                             style: Theme.of(context).textTheme.labelSmall)
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    NewsTile(
-                        title: 'title',
-                        author: 'author',
-                        imageUrl:
-                            'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg',
-                        time: '2 days ago',
-                        source: 'source'),
-                    NewsTile(
-                        title: 'title',
-                        author: 'author',
-                        imageUrl:
-                            'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg',
-                        time: '2 days ago',
-                        source: 'source'),
-                    NewsTile(
-                        title: 'title',
-                        author: 'author',
-                        imageUrl:
-                            'https://scx2.b-cdn.net/gfx/news/2024/project-sheds-light-on.jpg',
-                        time: '2 days ago',
-                        source: 'source'),
+                    Obx(() => Column(
+                        children: newsController.newsForYouList
+                            .map((e) => NewsTile(
+                                title: e.title!,
+                                author: e.author,
+                                imageUrl: e.imageUrl,
+                                time: e.publishDate!,
+                                source: e.source,
+                          sourceIcon: e.sourceIcon,
+                        ))
+                            .toList()))
                   ],
                 ),
               ),
