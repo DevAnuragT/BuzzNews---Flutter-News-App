@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/Controller/NewsController.dart';
+import 'package:news_app/screens/article_page/ArticlePage.dart';
 import 'package:news_app/screens/home_page/widgets/NewsTile.dart';
 import 'package:news_app/screens/home_page/widgets/SearchWidget.dart';
 import 'package:news_app/screens/home_page/widgets/TrendingCard.dart';
-import '../../Controller/NewsController.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    NewsController2 newsController = Get.put(NewsController2());
+    NewsController newsController = Get.put(NewsController());
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -107,15 +107,19 @@ class HomePage extends StatelessWidget {
                           children: newsController.trendingNewsList
                               .map(
                                 (e) => TrendingCard(
+                                  onTap: () {
+                                    Get.to(ArticlePage(news: e));
+                                  },
                                   title: e.title!,
-                                  time: e.publishDate!,
+                                  time: e.time,
                                   trending: '1',
                                   author: e.author!,
                                   source: e.source!,
                                   image: e.imageUrl,
-                                  url: e.url!,
                                   category: e.category,
                                   sourceIcon: e.sourceIcon,
+                                  // url: e.url!,
+                                  // videoUrl: e.videoUrl,
                                 ),
                               )
                               .toList()),
@@ -131,8 +135,11 @@ class HomePage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'News For you',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          'Explore',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyLarge!
+                              .copyWith(fontSize: 20),
                         ),
                         Text('See All',
                             style: Theme.of(context).textTheme.labelSmall)
@@ -144,16 +151,27 @@ class HomePage extends StatelessWidget {
                     Obx(() => Column(
                         children: newsController.newsForYouList
                             .map((e) => NewsTile(
-                                title: e.title!,
-                                author: e.author,
-                                imageUrl: e.imageUrl,
-                                time: e.publishDate!,
-                                source: e.source,
-                          sourceIcon: e.sourceIcon,
-                        ))
+                                  onTap: () {
+                                    Get.to(ArticlePage(news: e));
+                                  },
+                                  title: e.title!,
+                                  author: e.author,
+                                  imageUrl: e.imageUrl,
+                                  time: e.time,
+                                  source: e.source,
+                                  sourceIcon: e.sourceIcon,
+                                  // url: e.url,
+                                  // videoUrl: e.videoUrl,
+                                  category: e.category,
+                                ))
                             .toList()))
                   ],
                 ),
+              ),
+              SizedBox(height: 60),
+              Text(
+                '�� 2024 BuzzNews. All rights reserved.',
+                style: Theme.of(context).textTheme.labelMedium,
               ),
             ],
           ),
