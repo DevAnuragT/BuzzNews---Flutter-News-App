@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_app/screens/article_page/widgets/VideoPlayer.dart';
@@ -6,7 +8,8 @@ import '../../Model/NewsModel.dart';
 
 class ArticlePage extends StatelessWidget {
   final NewsModel news;
-  ArticlePage({required this.news});
+  RxBool showBack=false.obs;
+  ArticlePage({required this.news, required this.showBack});
 
   // Function to launch URL
   Future<void> _launchURL(String url) async {
@@ -25,45 +28,66 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: Column(
         children: [
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(10),
-                  bottomRight: Radius.circular(10),
-                ),
-                child: Container(
-                  height: 320,
-                  width: double.infinity,
-                  child: news.videoUrl != null && news.videoUrl!.isNotEmpty
-                      ? VideoPlayerWidget(videoUrl: news.videoUrl!)
-                      : news.imageUrl != null &&
-                      news.imageUrl!.isNotEmpty &&
-                      news.imageUrl != 'https://via.placeholder.com/150'
-                      ? Image.network(
-                    news.imageUrl!,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                    errorBuilder: (context, error, stackTrace) => Center(
-                      child: Image.asset(
-                        'assets/Photos/default_news.png',
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: double.infinity,
+          Stack(children: [
+            ClipRRect(
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(15),
+                bottomRight: Radius.circular(15),
+              ),
+              child: Container(
+                height: 320,
+                width: double.infinity,
+                child: news.videoUrl != null && news.videoUrl!.isNotEmpty
+                    ? VideoPlayerWidget(videoUrl: news.videoUrl!)
+                    : news.imageUrl != null &&
+                    news.imageUrl!.isNotEmpty &&
+                    news.imageUrl != 'https://via.placeholder.com/150'
+                    ? Stack(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(news.imageUrl!),
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: Container(
+                          color: Colors.black.withOpacity(0.1),
+                        ),
                       ),
                     ),
-                  )
-                      : Image.asset(
-                    'assets/Photos/default_news.png',
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    height: double.infinity,
-                  ),
+                    Center(
+                      child: Image.network(
+                        news.imageUrl!,
+                        fit: BoxFit.contain,
+                        width: double.infinity,
+                        height: double.infinity,
+                        errorBuilder: (context, error, stackTrace) => Center(
+                          child: Image.asset(
+                            'assets/Photos/default_news.png',
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                            height: double.infinity,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+                    : Image.asset(
+                  'assets/Photos/default_news.png',
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  height: double.infinity,
                 ),
               ),
+            ),
+            if(showBack.value)
               Positioned(
                 top: 40, // Adjust the position according to your needs
                 left: 16,
@@ -85,14 +109,38 @@ class ArticlePage extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(5, 3, 5, 0),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                  ),
+                ),
+                child: Text(
+                  'BuzzNews',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge!.copyWith(
+                    fontFamily: 'SFRounded',
+                    fontWeight: FontWeight.w900,
+                    fontSize: 13,
+                    letterSpacing: 1.5,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                ),
+              ),
+            ),
+          ]),
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Container(
                 padding: const EdgeInsets.all(15),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surface,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(10),
                     topRight: Radius.circular(10),
@@ -108,6 +156,34 @@ class ArticlePage extends StatelessWidget {
                           .bodyLarge!
                           .copyWith(fontSize: 18),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        if (news.category != null && news.category!.isNotEmpty)
+                          Container(
+                            child: Text(
+                              news.category!.capitalize!,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall!
+                                  .copyWith(color: Colors.white),
+                            ),
+                            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.primary,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                          ),
+                        if (news.time!='No Data')
+                          Text(
+                              news.time,
+                              style: Theme.of(context).textTheme.labelSmall!.copyWith(fontWeight: FontWeight.w500,fontSize: 12)
+                          )
+                      ],
+                    ),
                     SizedBox(height: 20),
                     Text(
                       news.description!,
@@ -116,7 +192,8 @@ class ArticlePage extends StatelessWidget {
                     SizedBox(height: 16),
                     InkWell(
                       onTap: () async {
-                        if (news.sourceUrl != null && news.sourceUrl!.isNotEmpty) {
+                        if (news.sourceUrl != null &&
+                            news.sourceUrl!.isNotEmpty) {
                           _launchURL(news.sourceUrl!);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
@@ -140,7 +217,8 @@ class ArticlePage extends StatelessWidget {
                           backgroundImage: news.sourceIcon != null &&
                               news.sourceIcon!.isNotEmpty
                               ? NetworkImage(news.sourceIcon!)
-                              : AssetImage('assets/Photos/Profile.png') as ImageProvider,
+                              : AssetImage('assets/Photos/Profile.png')
+                          as ImageProvider,
                           radius: 15,
                         ),
                         minLeadingWidth: 7,
@@ -151,45 +229,46 @@ class ArticlePage extends StatelessWidget {
               ),
             ),
           ),
-          Container(
-            height: 60,
-            width: double.infinity,
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
-              ),
-            ),
-            child: InkWell(
-              onTap: () async {
-                if (news.url != null && news.url!.isNotEmpty) {
-                  _launchURL(news.url!);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('News Article URL not available.'),
-                    ),
-                  );
-                }
-              },
-              child: const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Center(
-                  child: Text(
-                    'Read Full Article',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ),
         ],
       ),
     );
   }
 }
+
+// Container(
+//   height: 60,
+//   width: double.infinity,
+//   decoration: BoxDecoration(
+//     color: Theme.of(context).colorScheme.primary,
+//     borderRadius: BorderRadius.only(
+//       topLeft: Radius.circular(10),
+//       topRight: Radius.circular(10),
+//     ),
+//   ),
+//   child: InkWell(
+//     onTap: () async {
+//       if (news.url != null && news.url!.isNotEmpty) {
+//         _launchURL(news.url!);
+//       } else {
+//         ScaffoldMessenger.of(context).showSnackBar(
+//           SnackBar(
+//             content: Text('News Article URL not available.'),
+//           ),
+//         );
+//       }
+//     },
+//     child: Padding(
+//       padding: EdgeInsets.all(16.0),
+//       child: Center(
+//         child: Text(
+//           'Read Full Article',
+//           style: TextStyle(
+//             color: Colors.white,
+//             fontWeight: FontWeight.bold,
+//             fontSize: 12,
+//           ),
+//         ),
+//       ),
+//     ),
+//   ),
+// ),

@@ -10,16 +10,12 @@ class NewsController extends GetxController {
   String apiKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
   RxList<NewsModel> trendingNewsList = <NewsModel>[].obs;
   RxList<NewsModel> newsForYouList = <NewsModel>[].obs;
-  RxList<NewsModel> feedNewsList = <NewsModel>[].obs;
-  String nextPage = '';
-  RxBool hasMore = true.obs;
 
   @override
   void onInit() {
     super.onInit();
     getTrendingNews();
     getNewsForYou();
-    getFeedNews();
   }
 
   Future<void> getTrendingNews() async {
@@ -32,9 +28,9 @@ class NewsController extends GetxController {
         var articles = body['results'];
 
         for (var news in articles) {
-          bool isDuplicate = trendingNewsList.any((e) => e.title == news['title']) ||
-              newsForYouList.any((e) => e.title == news['title']) ||
-              feedNewsList.any((e) => e.title == news['title']);
+          bool isDuplicate = trendingNewsList.any((e) =>
+          e.title == news['title']) ||
+              newsForYouList.any((e) => e.title == news['title']);
 
           if (!isDuplicate) {
             trendingNewsList.add(NewsModel.fromJson(news));
@@ -60,9 +56,9 @@ class NewsController extends GetxController {
         var articles = body['results'];
 
         for (var news in articles) {
-          bool isDuplicate = newsForYouList.any((e) => e.title == news['title']) ||
-              trendingNewsList.any((e) => e.title == news['title']) ||
-              feedNewsList.any((e) => e.title == news['title']);
+          bool isDuplicate = newsForYouList.any((e) =>
+          e.title == news['title']) ||
+              trendingNewsList.any((e) => e.title == news['title']);
 
           if (!isDuplicate) {
             newsForYouList.add(NewsModel.fromJson(news));
@@ -75,43 +71,6 @@ class NewsController extends GetxController {
       print("Error: $e");
     } finally {
       isLoading.value = false;
-    }
-  }
-
-  Future<void> getFeedNews() async {
-    if (isLoading.value || !hasMore.value) return;
-
-    isLoading.value = true;
-    String baseURL = nextPage.isEmpty
-        ? "https://newsdata.io/api/1/news?apikey=$apiKey&size=10&language=$language"
-        : "https://newsdata.io/api/1/news?apikey=$apiKey&size=10&language=$language&page=$nextPage";
-    try {
-      var response = await http.get(Uri.parse(baseURL));
-      if (response.statusCode == 200) {
-        var body = jsonDecode(response.body);
-        var articles = body['results'];
-
-        for (var news in articles) {
-          bool isDuplicate = feedNewsList.any((e) => e.title == news['title']);
-
-          if (!isDuplicate) {
-            feedNewsList.add(NewsModel.fromJson(news));
-            print('added');
-          }
-        }
-        nextPage = body['nextPage'] ?? '';
-        if (articles.isEmpty || nextPage.isEmpty) {
-          hasMore.value = false;
-        }
-
-      } else {
-        print("Something went wrong in Feed news");
-      }
-    } catch (e) {
-      print("Error: $e");
-    } finally {
-      isLoading.value = false;
-      print(feedNewsList);
     }
   }
 }

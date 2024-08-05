@@ -108,7 +108,7 @@ class HomePage extends StatelessWidget {
                               .map(
                                 (e) => TrendingCard(
                                   onTap: () {
-                                    Get.to(ArticlePage(news: e));
+                                    Get.to(ArticlePage(news: e,showBack: true.obs,));
                                   },
                                   title: e.title!,
                                   time: e.time,
@@ -121,8 +121,7 @@ class HomePage extends StatelessWidget {
                                   // url: e.url!,
                                   // videoUrl: e.videoUrl,
                                 ),
-                              )
-                              .toList()),
+                              ).toList()),
                     ),
                   ),
                 ],
@@ -152,7 +151,7 @@ class HomePage extends StatelessWidget {
                         children: newsController.newsForYouList
                             .map((e) => NewsTile(
                                   onTap: () {
-                                    Get.to(ArticlePage(news: e));
+                                    Get.to(ArticlePage(news: e,showBack: true.obs,));
                                   },
                                   title: e.title!,
                                   author: e.author,

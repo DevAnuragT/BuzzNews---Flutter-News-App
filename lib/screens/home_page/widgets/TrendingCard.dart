@@ -30,7 +30,7 @@ class TrendingCard extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 270,
+        width: 300,
         height: 301,
         margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
         decoration: BoxDecoration(
@@ -88,7 +88,7 @@ class TrendingCard extends StatelessWidget {
                             fit: BoxFit.cover,
                             width: double.infinity,
                             height: double.infinity,
-                            errorBuilder: (context, error, stackTrace) => Center(
+                            errorBuilder: (context, error, stackTrace) => const Center(
                                 child: Icon(Icons
                                     .error)), // Display error icon if the asset image fails
                           ),
@@ -99,7 +99,7 @@ class TrendingCard extends StatelessWidget {
                     top: 10,
                     left: 10,
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 3),
+                      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.primary,
                         borderRadius: BorderRadius.circular(12),

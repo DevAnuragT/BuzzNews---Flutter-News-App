@@ -1,3 +1,5 @@
+import 'package:html/parser.dart' show parseFragment;
+
 class NewsModel {
   String? source;
   String? author;
@@ -48,8 +50,8 @@ class NewsModel {
   NewsModel.fromJson(dynamic json) {
     source = json['source_name'] ?? 'Unknown Source';
     author = json['creator'] != null && json['creator'].isNotEmpty ? json['creator'][0] : 'Unknown Author';
-    title = json['title'] ?? 'No Title';
-    description = json['description'] ?? 'No Description';
+    title = json['title'] != null ? parseFragment(json['title']).text : 'No Title';
+    description = json['description'] != null ? parseFragment(json['description']).text : 'No Description';
     url = json['link'];
     imageUrl = json['image_url'] ?? 'https://via.placeholder.com/150';
     publishDate = json['pubDate'] ?? 'No Date';

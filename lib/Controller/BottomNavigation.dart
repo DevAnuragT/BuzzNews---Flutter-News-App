@@ -7,7 +7,7 @@ class BottomNavController extends GetxController{
   RxInt index=0.obs;
   var pages=[
     HomePage(),
-    FeedPage(),
+    FeedPage(category: '',),
     ProfilePage()
   ];
 }
