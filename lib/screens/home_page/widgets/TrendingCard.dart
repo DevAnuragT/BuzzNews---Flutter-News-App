@@ -59,39 +59,42 @@ class TrendingCard extends StatelessWidget {
           children: [
             Stack(
               children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(3, 3, 3, 0),
-                  height: 170,
-                  width: double.infinity,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child: image != null &&
-                            image != 'https://via.placeholder.com/150'
-                        ? Image.network(
-                            image!,
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                            errorBuilder: (context, error, stackTrace) => Center(
-                                child: Image.asset(
-                                    'assets/Photos/breaking_news.png',
-                                    fit: BoxFit.cover,
-                                    width: double.infinity,
-                                    height: double.infinity,
-                                    errorBuilder: (context, error, stackTrace) =>
-                                        Center(
-                                            child: Icon(Icons
-                                                .error)))), // Display error icon if the network image fails
-                          )
-                        : Image.asset(
-                            'assets/Photos/breaking_news.png',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
-                            errorBuilder: (context, error, stackTrace) => const Center(
-                                child: Icon(Icons
-                                    .error)), // Display error icon if the asset image fails
-                          ),
+                Hero(
+                  tag: 'image',
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(3, 3, 3, 0),
+                    height: 170,
+                    width: double.infinity,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: image != null &&
+                              image != 'https://via.placeholder.com/150'
+                          ? Image.network(
+                              image!,
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                              errorBuilder: (context, error, stackTrace) => Center(
+                                  child: Image.asset(
+                                      'assets/Photos/breaking_news.png',
+                                      fit: BoxFit.cover,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      errorBuilder: (context, error, stackTrace) =>
+                                          Center(
+                                              child: Icon(Icons
+                                                  .error)))), // Display error icon if the network image fails
+                            )
+                          : Image.asset(
+                              'assets/Photos/breaking_news.png',
+                              fit: BoxFit.cover,
+                              width: double.infinity,
+                              height: double.infinity,
+                              errorBuilder: (context, error, stackTrace) => const Center(
+                                  child: Icon(Icons
+                                      .error)), // Display error icon if the asset image fails
+                            ),
+                    ),
                   ),
                 ),
                 if (category != null && category!.isNotEmpty)
@@ -143,7 +146,9 @@ class TrendingCard extends StatelessWidget {
                   ListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      "$author From $source",
+                      author != 'Unknown Author'
+                          ? "${author} From ${source}"
+                          : "${source}",
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                       style: Theme.of(context).textTheme.bodySmall,

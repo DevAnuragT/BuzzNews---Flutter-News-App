@@ -1,14 +1,16 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_app/screens/article_page/widgets/ImageViewer.dart';
 import 'package:news_app/screens/article_page/widgets/VideoPlayer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../Model/NewsModel.dart';
 
 class ArticlePage extends StatelessWidget {
   final NewsModel news;
-  RxBool showBack=false.obs;
+  RxBool showBack = false.obs;
+  final PageController pageController = PageController();
+
   ArticlePage({required this.news, required this.showBack});
 
   // Function to launch URL
@@ -29,65 +31,88 @@ class ArticlePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Column(
+      body: PageView(
+        controller: pageController,
         children: [
-          Stack(children: [
+          _buildArticlePage(context),
+          // Add more pages here
+          // Example: AnotherArticlePage(news: anotherNews),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildArticlePage(BuildContext context) {
+    return Column(
+      children: [
+        Stack(
+          children: [
             ClipRRect(
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(15),
                 bottomRight: Radius.circular(15),
               ),
-              child: Container(
-                height: 320,
-                width: double.infinity,
-                child: news.videoUrl != null && news.videoUrl!.isNotEmpty
-                    ? VideoPlayerWidget(videoUrl: news.videoUrl!)
-                    : news.imageUrl != null &&
-                    news.imageUrl!.isNotEmpty &&
-                    news.imageUrl != 'https://via.placeholder.com/150'
-                    ? Stack(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image: NetworkImage(news.imageUrl!),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      child: BackdropFilter(
-                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                        child: Container(
-                          color: Colors.black.withOpacity(0.1),
-                        ),
-                      ),
-                    ),
-                    Center(
-                      child: Image.network(
-                        news.imageUrl!,
-                        fit: BoxFit.contain,
-                        width: double.infinity,
-                        height: double.infinity,
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Image.asset(
-                            'assets/Photos/default_news.png',
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                            height: double.infinity,
+              child: InkWell(
+                onTap: () {
+                  Get.to(ImageViewer(imageUrl: news.imageUrl));
+                },
+                child: Hero(
+                  tag: 'image',
+                  child: Container(
+                    height: 320,
+                    width: double.infinity,
+                    child: news.videoUrl != null && news.videoUrl!.isNotEmpty
+                        ? VideoPlayerWidget(videoUrl: news.videoUrl!)
+                        : news.imageUrl != null &&
+                        news.imageUrl!.isNotEmpty &&
+                        news.imageUrl != 'https://via.placeholder.com/150'
+                        ? Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                              image: NetworkImage(news.imageUrl!),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(
+                                sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              color: Colors.black.withOpacity(0.1),
+                            ),
                           ),
                         ),
-                      ),
+                        Center(
+                          child: Image.network(
+                            news.imageUrl!,
+                            fit: BoxFit.contain,
+                            width: double.infinity,
+                            height: double.infinity,
+                            errorBuilder:
+                                (context, error, stackTrace) => Center(
+                              child: Image.asset(
+                                'assets/Photos/default_news.png',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                        : Image.asset(
+                      'assets/Photos/default_news.png',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
                     ),
-                  ],
-                )
-                    : Image.asset(
-                  'assets/Photos/default_news.png',
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  height: double.infinity,
+                  ),
                 ),
               ),
             ),
-            if(showBack.value)
+            if (showBack.value)
               Positioned(
                 top: 40, // Adjust the position according to your needs
                 left: 16,
@@ -133,142 +158,111 @@ class ArticlePage extends StatelessWidget {
                 ),
               ),
             ),
-          ]),
-          Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
+          ],
+        ),
+        SizedBox(height: 10,),
+        Expanded(
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              padding: const EdgeInsets.all(15),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    news.title!,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(fontSize: 18),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      news.title!,
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyLarge!
-                          .copyWith(fontSize: 18),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        if (news.category != null && news.category!.isNotEmpty)
-                          Container(
-                            child: Text(
-                              news.category!.capitalize!,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall!
-                                  .copyWith(color: Colors.white),
-                            ),
-                            padding: EdgeInsets.symmetric(vertical: 5,horizontal: 10),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.primary,
-                              borderRadius: BorderRadius.circular(15),
-                            ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      if (news.category != null && news.category!.isNotEmpty)
+                        Container(
+                          child: Text(
+                            news.category!.capitalize!,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodySmall!
+                                .copyWith(color: Colors.white),
                           ),
-                        if (news.time!='No Data')
-                          Text(
-                              news.time,
-                              style: Theme.of(context).textTheme.labelSmall!.copyWith(fontWeight: FontWeight.w500,fontSize: 12)
-                          )
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      news.description!,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    SizedBox(height: 16),
-                    InkWell(
-                      onTap: () async {
-                        if (news.sourceUrl != null &&
-                            news.sourceUrl!.isNotEmpty) {
-                          _launchURL(news.sourceUrl!);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Source URL not available.'),
-                            ),
-                          );
-                        }
-                      },
-                      child: ListTile(
-                        contentPadding: EdgeInsets.zero,
-                        title: Text(
-                          news.author != 'Unknown Author'
-                              ? "${news.author} From ${news.source}"
-                              : "${news.source}",
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 10),
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
                         ),
-                        leading: CircleAvatar(
-                          backgroundImage: news.sourceIcon != null &&
-                              news.sourceIcon!.isNotEmpty
-                              ? NetworkImage(news.sourceIcon!)
-                              : AssetImage('assets/Photos/Profile.png')
-                          as ImageProvider,
-                          radius: 15,
-                        ),
-                        minLeadingWidth: 7,
+                      if (news.time != 'No Data')
+                        Text(news.time,
+                            style: Theme.of(context)
+                                .textTheme
+                                .labelSmall!
+                                .copyWith(
+                                fontWeight: FontWeight.w500, fontSize: 12))
+                    ],
+                  ),
+                  SizedBox(height: 15),
+                  Text(
+                    news.description!,
+                    style: Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 15),
+                    maxLines: 15,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: 16),
+                  InkWell(
+                    onTap: () async {
+                      if (news.sourceUrl != null &&
+                          news.sourceUrl!.isNotEmpty) {
+                        _launchURL(news.sourceUrl!);
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Source URL not available.'),
+                          ),
+                        );
+                      }
+                    },
+                    child: ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      title: Text(
+                        news.author != 'Unknown Author'
+                            ? "${news.author} From ${news.source}"
+                            : "${news.source}",
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
+                      leading: CircleAvatar(
+                        backgroundImage: news.sourceIcon != null &&
+                            news.sourceIcon!.isNotEmpty
+                            ? NetworkImage(news.sourceIcon!)
+                            : AssetImage('assets/Photos/Profile.png')
+                        as ImageProvider,
+                        radius: 15,
+                      ),
+                      minLeadingWidth: 7,
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(height: 70)
+                ],
               ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
-
-// Container(
-//   height: 60,
-//   width: double.infinity,
-//   decoration: BoxDecoration(
-//     color: Theme.of(context).colorScheme.primary,
-//     borderRadius: BorderRadius.only(
-//       topLeft: Radius.circular(10),
-//       topRight: Radius.circular(10),
-//     ),
-//   ),
-//   child: InkWell(
-//     onTap: () async {
-//       if (news.url != null && news.url!.isNotEmpty) {
-//         _launchURL(news.url!);
-//       } else {
-//         ScaffoldMessenger.of(context).showSnackBar(
-//           SnackBar(
-//             content: Text('News Article URL not available.'),
-//           ),
-//         );
-//       }
-//     },
-//     child: Padding(
-//       padding: EdgeInsets.all(16.0),
-//       child: Center(
-//         child: Text(
-//           'Read Full Article',
-//           style: TextStyle(
-//             color: Colors.white,
-//             fontWeight: FontWeight.bold,
-//             fontSize: 12,
-//           ),
-//         ),
-//       ),
-//     ),
-//   ),
-// ),

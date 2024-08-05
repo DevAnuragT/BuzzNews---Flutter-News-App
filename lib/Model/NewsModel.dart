@@ -1,4 +1,5 @@
 import 'package:html/parser.dart' show parseFragment;
+import 'package:html_unescape/html_unescape.dart';
 
 class NewsModel {
   String? source;
@@ -12,7 +13,7 @@ class NewsModel {
   String? sourceIcon;
   String? sourceUrl;
   String? videoUrl;
-  String time="No Data";
+  String time = "No Data";
 
   NewsModel({
     this.source,
@@ -48,14 +49,15 @@ class NewsModel {
   }
 
   NewsModel.fromJson(dynamic json) {
+    var unescape = HtmlUnescape();
     source = json['source_name'] ?? 'Unknown Source';
     author = json['creator'] != null && json['creator'].isNotEmpty ? json['creator'][0] : 'Unknown Author';
-    title = json['title'] != null ? parseFragment(json['title']).text : 'No Title';
-    description = json['description'] != null ? parseFragment(json['description']).text : 'No Description';
+    title = json['title'] != null ? unescape.convert(parseFragment(json['title']).text!) : 'No Title';
+    description = json['description'] != null ? unescape.convert(parseFragment(json['description']).text!) : 'No Description';
     url = json['link'];
     imageUrl = json['image_url'] ?? 'https://via.placeholder.com/150';
     publishDate = json['pubDate'] ?? 'No Date';
-    time=formatTime(publishDate!);
+    time = formatTime(publishDate!);
     category = json['category'] != null && json['category'].isNotEmpty ? json['category'][0] : 'No Category';
     sourceIcon = json['source_icon'] ?? null;
     sourceUrl = json['source_url'] ?? null;
@@ -63,7 +65,6 @@ class NewsModel {
   }
 
   Map<String, dynamic> toJson() {
-
     final map = <String, dynamic>{};
     map['source'] = source;
     map['author'] = author;
