@@ -52,8 +52,8 @@ class NewsModel {
     var unescape = HtmlUnescape();
     source = json['source_name'] ?? 'Unknown Source';
     author = json['creator'] != null && json['creator'].isNotEmpty ? json['creator'][0] : 'Unknown Author';
-    title = json['title'] != null ? unescape.convert(parseFragment(json['title']).text!) : 'No Title';
-    description = json['description'] != null ? unescape.convert(parseFragment(json['description']).text!) : 'No Description';
+    title = json['title'] != null ? unescape.convert(parseFragment(json['title']).text!).replaceAll('â€™', '\'') : 'No Title';
+    description = json['description'] != null ? unescape.convert(parseFragment(json['description']).text!).replaceAll('â€™', '\'') : 'No Description';
     url = json['link'];
     imageUrl = json['image_url'] ?? 'https://via.placeholder.com/150';
     publishDate = json['pubDate'] ?? 'No Date';

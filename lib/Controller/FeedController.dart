@@ -4,18 +4,26 @@ import 'package:http/http.dart' as http;
 import 'package:news_app/Model/NewsModel.dart';
 
 class FeedController extends GetxController {
-  String category;
+  final String category;
   FeedController({required this.category});
   RxList<NewsModel> feedList = <NewsModel>[].obs;
   String apiKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
   RxString nextPage = ''.obs;
   String country = 'in';
   String language = 'en';
+  RxInt currentIndex = 0.obs;
 
   @override
   void onInit() {
-    fetchNews(category);
     super.onInit();
+    fetchNews(category);
+  }
+
+  Future<void> refreshNews() async{
+    currentIndex.value = 0;
+    nextPage.value = '';
+    feedList.clear();
+    fetchNews(category);
   }
 
   Future<void> fetchNews(String category) async {

@@ -14,7 +14,7 @@ class HomePageController extends StatelessWidget {
       body: Stack(
         children: [
           Obx(()=> controller.pages[controller.index.value]),
-          Navigationbar(),
+          const Navigationbar(),
         ],
       ),
     );

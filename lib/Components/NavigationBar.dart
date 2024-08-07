@@ -14,7 +14,7 @@ class Navigationbar extends StatelessWidget {
       right: 45,
       bottom: 18,
       child: Container(
-        margin: EdgeInsets.all(10),
+        margin: const EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(20),
@@ -23,7 +23,7 @@ class Navigationbar extends StatelessWidget {
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3), // Adjusted shadow offset for a more natural look
+              offset: const Offset(0, 3), // Adjusted shadow offset for a more natural look
             ),
           ],
         ),
@@ -36,8 +36,8 @@ class Navigationbar extends StatelessWidget {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.book),
-                label: 'Articles',
+                icon: Icon(Icons.line_style_rounded),
+                label: 'Feed',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings),
@@ -52,7 +52,7 @@ class Navigationbar extends StatelessWidget {
             },
             //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
             backgroundColor: Theme.of(context).colorScheme.surface,
-            selectedIconTheme: IconThemeData(size: 30), // Increase size when selected
+            selectedIconTheme: const IconThemeData(size: 30), // Increase size when selected
             showSelectedLabels: false,
             showUnselectedLabels: false,
           )),

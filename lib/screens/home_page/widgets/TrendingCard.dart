@@ -3,21 +3,17 @@ import 'package:get/get.dart';
 
 class TrendingCard extends StatelessWidget {
   final String title;
-  final String time;
-  final String trending;
+  // final String time;
   final String author;
   final String source;
   final String? image;
-  //final String url;
   final String? category;
   final String? sourceIcon;
-  //final String? videoUrl;
   final VoidCallback onTap;
 
   TrendingCard(
       {required this.title,
-      required this.time,
-      required this.trending,
+      // required this.time,
       required this.author,
       required this.source,
       this.image,
@@ -31,8 +27,8 @@ class TrendingCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 300,
-        height: 301,
-        margin: EdgeInsets.fromLTRB(8, 0, 8, 8),
+        height: 280,
+        margin: EdgeInsets.fromLTRB(8, 0, 3, 5),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(23),
@@ -123,20 +119,19 @@ class TrendingCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Trending #$trending",
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                      Text(
-                        time,
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 5),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     // Text(
+                  //     //   "Trending #$trending",
+                  //     //   style: Theme.of(context).textTheme.labelSmall,
+                  //     // ),
+                  //     Text(
+                  //       time,
+                  //       style: Theme.of(context).textTheme.labelSmall,
+                  //     ),
+                  //   ],
+                  // ),
                   Text(
                     title,
                     style: Theme.of(context).textTheme.bodyMedium,

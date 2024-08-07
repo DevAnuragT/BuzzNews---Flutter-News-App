@@ -4,7 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:news_app/Model/NewsModel.dart';
 
 class NewsController extends GetxController {
-  RxBool isLoading = false.obs;
+  RxBool isTrendLoading = false.obs;
+  RxBool isExploreLoading = false.obs;
+  RxBool isSearchLoading = false.obs;
   String country = 'in';
   String language = 'en';
   String apiKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
@@ -17,9 +19,15 @@ class NewsController extends GetxController {
     getTrendingNews();
     getNewsForYou();
   }
+  Future<void> refreshNews() async {
+    trendingNewsList.clear();
+    newsForYouList.clear();
+    await getTrendingNews();
+    await getNewsForYou();
+  }
 
   Future<void> getTrendingNews() async {
-    isLoading.value = true;
+    isTrendLoading.value = true;
     String baseURL = "https://newsdata.io/api/1/latest?apikey=$apiKey&size=10&language=$language";
     try {
       var response = await http.get(Uri.parse(baseURL));
@@ -42,12 +50,12 @@ class NewsController extends GetxController {
     } catch (e) {
       print("Error: $e");
     } finally {
-      isLoading.value = false;
+      isTrendLoading.value = false;
     }
   }
 
   Future<void> getNewsForYou() async {
-    isLoading.value = true;
+    isExploreLoading.value = true;
     String baseURL = "https://newsdata.io/api/1/news?apikey=$apiKey&size=10&country=$country&language=$language"; // Customize your query as needed
     try {
       var response = await http.get(Uri.parse(baseURL));
@@ -70,7 +78,7 @@ class NewsController extends GetxController {
     } catch (e) {
       print("Error: $e");
     } finally {
-      isLoading.value = false;
+      isExploreLoading.value = false;
     }
   }
 }
