@@ -54,7 +54,7 @@ class SearchWidget extends StatelessWidget {
           _controller.clear();
         } else {
           print('Searching for: $query');
-          Get.to(ResultPage(query: query), transition: Transition.leftToRight);
+          Get.to(()=>ResultPage(query: query), transition: Transition.leftToRight);
           _controller.clear();
         }
       },

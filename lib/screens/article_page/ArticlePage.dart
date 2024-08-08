@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_app/screens/article_page/widgets/GeminiButton.dart';
 import 'package:news_app/screens/article_page/widgets/ImageViewer.dart';
 import 'package:news_app/screens/article_page/widgets/VideoPlayer.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../Controller/GeminiController.dart';
 import '../../Model/NewsModel.dart';
 
 // ignore: must_be_immutable
@@ -11,6 +13,7 @@ class ArticlePage extends StatelessWidget {
   final NewsModel news;
   RxBool showBack = false.obs;
   final PageController pageController = PageController();
+  GeminiController gemini = GeminiController();
 
   ArticlePage({required this.news, required this.showBack});
 
@@ -41,9 +44,15 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: showBack.value ? FloatingActionButton(onPressed: ()=> Get.back(),
-        child: Icon(Icons.arrow_back_ios_new_rounded,size: 30,),
-      ) : null,
+      floatingActionButton: showBack.value
+          ? FloatingActionButton(
+              onPressed: () => Get.back(),
+              child: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                size: 30,
+              ),
+            )
+          : null,
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: PageView(
         controller: pageController,
@@ -128,6 +137,26 @@ class ArticlePage extends StatelessWidget {
                   ),
                 ),
               ),
+              if (news.category != null && news.category!.isNotEmpty)
+                Positioned(
+                  top: 40,
+                  right: 5,
+                  child: Container(
+                    child: Text(
+                      news.category!.capitalize!,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall!
+                          .copyWith(color: Colors.white),
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
               // if (showBack.value)
               //   Positioned(
               //     top: 40, // Adjust the position according to your needs
@@ -204,22 +233,9 @@ class ArticlePage extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    if (news.category != null && news.category!.isNotEmpty)
-                      Container(
-                        child: Text(
-                          news.category!.capitalize!,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodySmall!
-                              .copyWith(color: Colors.white),
-                        ),
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
+                    GeminiButton(
+                      title: news.title!,
+                    ),
                     if (news.time != 'No Data')
                       Text(news.time,
                           style: Theme.of(context)

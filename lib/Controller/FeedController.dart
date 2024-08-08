@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/Config/ApiKeys.dart';
 import 'package:news_app/Model/NewsModel.dart';
 
 class FeedController extends GetxController {
   final String category;
   FeedController({required this.category});
   RxList<NewsModel> feedList = <NewsModel>[].obs;
-  String apiKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
   RxString nextPage = ''.obs;
   String country = 'in';
   String language = 'en';
@@ -30,15 +30,15 @@ class FeedController extends GetxController {
     String url;
     if (category.isNotEmpty) {
       if (nextPage.isEmpty) {
-        url = 'https://newsdata.io/api/1/latest?apikey=$apiKey&size=10&language=$language&category=$category';
+        url = 'https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language&category=$category';
       } else {
-        url = 'https://newsdata.io/api/1/latest?apikey=$apiKey&size=10&language=$language&category=$category&page=$nextPage';
+        url = 'https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language&category=$category&page=$nextPage';
       }
     } else {
       if (nextPage.isEmpty) {
-        url = 'https://newsdata.io/api/1/latest?apikey=$apiKey&size=10&language=$language&country=$country';
+        url = 'https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language&country=$country';
       } else {
-        url = 'https://newsdata.io/api/1/latest?apikey=$apiKey&size=10&language=$language&country=$country&page=$nextPage';
+        url = 'https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language&country=$country&page=$nextPage';
       }
     }
 

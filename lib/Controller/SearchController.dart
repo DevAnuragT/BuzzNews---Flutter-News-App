@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import '../Config/ApiKeys.dart';
 import '../Model/NewsModel.dart';
 
 class SearchingController extends GetxController {
@@ -8,22 +9,27 @@ class SearchingController extends GetxController {
   RxString nextPage=''.obs;
   RxList<NewsModel> searchedNewsList = <NewsModel>[].obs;
   String language = 'en';
-  String apiKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
 
   Future<void> searchNews(String query) async {
     String baseURL;
     isSearchLoading.value = true;
     if (query.contains(' ')) {
-      if (nextPage.isEmpty)
-        baseURL = "https://newsdata.io/api/1/latest?apikey=$apiKey&qInTitle='$query'&size=10&language=$language";
+      if (nextPage.isEmpty) {
+        baseURL =
+        "https://newsdata.io/api/1/latest?apiKey=$newsKey&qInTitle='$query'&size=10&language=$language";
+        searchedNewsList.clear();
+      }
       else
-        baseURL= "https://newsdata.io/api/1/latest?apikey=$apiKey&qInTitle='$query'&size=10&language=$language&page=$nextPage";
+        baseURL= "https://newsdata.io/api/1/latest?apiKey=$newsKey&qInTitle='$query'&size=10&language=$language&page=$nextPage";
     }
     else {
-      if (nextPage.isEmpty)
-        baseURL = "https://newsdata.io/api/1/latest?apikey=$apiKey&qInTitle=$query&size=10&language=$language";
+      if (nextPage.isEmpty) {
+        baseURL =
+        "https://newsdata.io/api/1/latest?apiKey=$newsKey&qInTitle=$query&size=10&language=$language";
+        searchedNewsList.clear();
+      }
       else
-        baseURL = "https://newsdata.io/api/1/latest?apikey=$apiKey&qInTitle=$query&size=10&language=$language&page=$nextPage";
+        baseURL = "https://newsdata.io/api/1/latest?apiKey=$newsKey&qInTitle=$query&size=10&language=$language&page=$nextPage";
     }
     try {
       var response = await http.get(Uri.parse(baseURL));
@@ -38,7 +44,7 @@ class SearchingController extends GetxController {
         }
         nextPage.value = body['nextPage'];
       } else {
-        print("Something went wrong in Search News");
+        print("Something went wrong in Search News: ${response.statusCode}");
       }
     } catch (e) {
       print("Error: $e");

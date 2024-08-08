@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gemini/flutter_gemini.dart';
 import 'package:get/get.dart';
 import 'package:news_app/Controller/NewsController.dart';
 import 'package:news_app/screens/article_page/ArticlePage.dart';
@@ -8,6 +9,7 @@ import 'package:news_app/screens/home_page/widgets/NewsTileLoading.dart';
 import 'package:news_app/screens/home_page/widgets/SearchWidget.dart';
 import 'package:news_app/screens/home_page/widgets/TrendingCard.dart';
 import 'package:news_app/screens/home_page/widgets/TrendingLoading.dart'; // Import the shimmer widget
+import 'package:news_app/Controller/GeminiController.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -115,7 +117,7 @@ class HomePage extends StatelessWidget {
                             .map(
                               (e) => TrendingCard(
                             onTap: () {
-                              Get.to(ArticlePage(news: e, showBack: true.obs),transition: Transition.downToUp);
+                              Get.to(()=>ArticlePage(news: e, showBack: true.obs),transition: Transition.downToUp);
                             },
                             title: e.title!,
                             author: e.author!,
@@ -168,7 +170,7 @@ class HomePage extends StatelessWidget {
                             children: newsController.newsForYouList
                                 .map((e) => NewsTile(
                               onTap: () {
-                                Get.to(ArticlePage(news: e, showBack: true.obs),transition: Transition.rightToLeft);
+                                Get.to(()=>ArticlePage(news: e, showBack: true.obs),transition: Transition.rightToLeft);
                               },
                               title: e.title!,
                               author: e.author,
