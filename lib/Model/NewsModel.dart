@@ -66,17 +66,17 @@ class NewsModel {
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['source'] = source;
-    map['author'] = author;
+    // map['source_name'] = source;
+    // map['creator'] = [author];
     map['title'] = title;
     map['description'] = description;
-    map['url'] = url;
-    map['image_url'] = imageUrl;
-    map['publish_date'] = time;
-    map['category'] = category;
-    map['source_icon'] = sourceIcon;
-    map['source_url'] = sourceUrl;
-    map['video_url'] = videoUrl;
+    // map['link'] = url;
+    // map['image_url'] = imageUrl;
+    // map['pubDate'] = publishDate;
+    map['category'] = [category];
+    // map['source_icon'] = sourceIcon;
+    // map['source_url'] = sourceUrl;
+    // map['video_url'] = videoUrl;
     return map;
   }
 }

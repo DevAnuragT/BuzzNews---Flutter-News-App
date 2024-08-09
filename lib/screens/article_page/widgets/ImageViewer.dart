@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:photo_view/photo_view.dart';
+import 'package:get/get.dart';
 
 class ImageViewer extends StatelessWidget {
   final String? imageUrl;
@@ -70,6 +71,27 @@ class ImageViewer extends StatelessWidget {
                   fit: BoxFit.cover,
                   filterQuality: FilterQuality.low,
                   opacity: 0,
+                ),
+              ),
+            ),
+          ),
+          Positioned(
+            top: 50, // Adjust the position according to your needs
+            left: 20,
+            child: InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: const BoxDecoration(
+                  color: Colors.black45,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new_rounded,
+                  color: Colors.white,
+                  size: 24,
                 ),
               ),
             ),

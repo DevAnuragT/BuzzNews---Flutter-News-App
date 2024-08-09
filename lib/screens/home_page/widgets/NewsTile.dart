@@ -54,31 +54,28 @@ class NewsTile extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 10),
         child: Row(
           children: [
-            Hero(
-              tag: 'image',
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: imageUrl != null && imageUrl != 'https://via.placeholder.com/150'
-                    ? Image.network(
-                  imageUrl!,
-                  fit: BoxFit.fitHeight,
-                  width: 125,
-                  height: 130,
-                  errorBuilder: (context, error, stackTrace) => Center(
-                    child: Image.asset(
-                      'assets/Photos/default_news.png',
-                      fit: BoxFit.fitHeight,
-                      width: 125,
-                      height: 130,
-                    ),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: imageUrl != null && imageUrl != 'https://via.placeholder.com/150'
+                  ? Image.network(
+                imageUrl!,
+                fit: BoxFit.fitHeight,
+                width: 125,
+                height: 130,
+                errorBuilder: (context, error, stackTrace) => Center(
+                  child: Image.asset(
+                    'assets/Photos/default_news.png',
+                    fit: BoxFit.fitHeight,
+                    width: 125,
+                    height: 130,
                   ),
-                )
-                    : Image.asset(
-                  'assets/Photos/default_news.png',
-                  fit: BoxFit.fitHeight,
-                  width: 120,
-                  height: 130,
                 ),
+              )
+                  : Image.asset(
+                'assets/Photos/default_news.png',
+                fit: BoxFit.fitHeight,
+                width: 120,
+                height: 130,
               ),
             ),
             SizedBox(width: 10),

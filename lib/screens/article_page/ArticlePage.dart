@@ -79,61 +79,58 @@ class ArticlePage extends StatelessWidget {
                   onTap: () {
                     Get.to(ImageViewer(imageUrl: news.imageUrl));
                   },
-                  child: Hero(
-                    tag: 'image',
-                    child: Container(
-                      height: 270,
-                      width: double.infinity,
-                      child: news.videoUrl != null && news.videoUrl!.isNotEmpty
-                          ? VideoPlayerWidget(videoUrl: news.videoUrl!)
-                          : news.imageUrl != null &&
-                                  news.imageUrl!.isNotEmpty &&
-                                  news.imageUrl !=
-                                      'https://via.placeholder.com/150'
-                              ? Stack(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        image: DecorationImage(
-                                          image: NetworkImage(news.imageUrl!),
+                  child: Container(
+                    height: 270,
+                    width: double.infinity,
+                    child: news.videoUrl != null && news.videoUrl!.isNotEmpty
+                        ? VideoPlayerWidget(videoUrl: news.videoUrl!)
+                        : news.imageUrl != null &&
+                                news.imageUrl!.isNotEmpty &&
+                                news.imageUrl !=
+                                    'https://via.placeholder.com/150'
+                            ? Stack(
+                                children: [
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(news.imageUrl!),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                    child: BackdropFilter(
+                                      filter: ImageFilter.blur(
+                                          sigmaX: 10, sigmaY: 10),
+                                      child: Container(
+                                        color: Colors.black.withOpacity(0.1),
+                                      ),
+                                    ),
+                                  ),
+                                  Center(
+                                    child: Image.network(
+                                      news.imageUrl!,
+                                      fit: BoxFit.contain,
+                                      width: double.infinity,
+                                      height: double.infinity,
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              Center(
+                                        child: Image.asset(
+                                          'assets/Photos/default_news.png',
                                           fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                      child: BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 10, sigmaY: 10),
-                                        child: Container(
-                                          color: Colors.black.withOpacity(0.1),
+                                          width: double.infinity,
+                                          height: double.infinity,
                                         ),
                                       ),
                                     ),
-                                    Center(
-                                      child: Image.network(
-                                        news.imageUrl!,
-                                        fit: BoxFit.contain,
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        errorBuilder:
-                                            (context, error, stackTrace) =>
-                                                Center(
-                                          child: Image.asset(
-                                            'assets/Photos/default_news.png',
-                                            fit: BoxFit.cover,
-                                            width: double.infinity,
-                                            height: double.infinity,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : Image.asset(
-                                  'assets/Photos/default_news.png',
-                                  fit: BoxFit.cover,
-                                  width: double.infinity,
-                                  height: double.infinity,
-                                ),
-                    ),
+                                  ),
+                                ],
+                              )
+                            : Image.asset(
+                                'assets/Photos/default_news.png',
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                   ),
                 ),
               ),
