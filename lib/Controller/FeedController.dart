@@ -3,14 +3,16 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/Config/ApiKeys.dart';
 import 'package:news_app/Model/NewsModel.dart';
+import 'SettingsController.dart'; // Import the SettingsController
 
 class FeedController extends GetxController {
   final String category;
   FeedController({required this.category});
+
+  final SettingsController settingsController = Get.put(SettingsController()); // Find the existing SettingsController
+
   RxList<NewsModel> feedList = <NewsModel>[].obs;
   RxString nextPage = ''.obs;
-  String country = 'in';
-  String language = 'en';
   RxInt currentIndex = 0.obs;
 
   @override
@@ -19,7 +21,7 @@ class FeedController extends GetxController {
     fetchNews(category);
   }
 
-  Future<void> refreshNews() async{
+  Future<void> refreshNews() async {
     currentIndex.value = 0;
     nextPage.value = '';
     feedList.clear();
@@ -28,6 +30,10 @@ class FeedController extends GetxController {
 
   Future<void> fetchNews(String category) async {
     String url;
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+    String temp = settingsController.selectedCountry.value; // Get the selected country
+    String country= temp=='India'? 'in': 'us';
+
     if (category.isNotEmpty) {
       if (nextPage.isEmpty) {
         url = 'https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language&category=$category';

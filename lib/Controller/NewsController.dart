@@ -2,16 +2,16 @@ import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:news_app/Config/ApiKeys.dart';
+import 'package:news_app/Controller/SettingsController.dart';
 import 'package:news_app/Model/NewsModel.dart';
 
 class NewsController extends GetxController {
   RxBool isTrendLoading = false.obs;
   RxBool isExploreLoading = false.obs;
   RxBool isSearchLoading = false.obs;
-  String country = 'in';
-  String language = 'en';
   RxList<NewsModel> trendingNewsList = <NewsModel>[].obs;
   RxList<NewsModel> newsForYouList = <NewsModel>[].obs;
+  SettingsController settingsController=Get.put(SettingsController());
 
   @override
   void onInit() {
@@ -28,6 +28,7 @@ class NewsController extends GetxController {
 
   Future<void> getTrendingNews() async {
     isTrendLoading.value = true;
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
     String baseURL = "https://newsdata.io/api/1/latest?apikey=$newsKey&size=10&language=$language";
     try {
       var response = await http.get(Uri.parse(baseURL));
@@ -56,6 +57,10 @@ class NewsController extends GetxController {
 
   Future<void> getNewsForYou() async {
     isExploreLoading.value = true;
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+    String temp = settingsController.selectedCountry.value; // Get the selected country
+    String country= temp=='India'? 'in': 'us';
+
     String baseURL = "https://newsdata.io/api/1/news?apikey=$newsKey&size=10&country=$country&language=$language"; // Customize your query as needed
     try {
       var response = await http.get(Uri.parse(baseURL));

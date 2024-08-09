@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:news_app/screens/home_page/home.dart';
-import 'package:news_app/screens/profile_page/ProfilePage.dart';
+import 'package:news_app/screens/profile_page/SettingPage.dart';
 import '../screens/feed_page/FeedPage.dart';
 
 class BottomNavController extends GetxController{
@@ -8,6 +8,6 @@ class BottomNavController extends GetxController{
   var pages=[
     HomePage(),
     FeedPage(category: '',),
-    ProfilePage()
+    SettingsPage()
   ];
 }

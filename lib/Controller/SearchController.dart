@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:news_app/Controller/SettingsController.dart';
 import 'dart:convert';
 import '../Config/ApiKeys.dart';
 import '../Model/NewsModel.dart';
@@ -8,11 +9,12 @@ class SearchingController extends GetxController {
   RxBool isSearchLoading = false.obs;
   RxString nextPage=''.obs;
   RxList<NewsModel> searchedNewsList = <NewsModel>[].obs;
-  String language = 'en';
+  SettingsController settingsController=Get.put(SettingsController());
 
   Future<void> searchNews(String query) async {
     String baseURL;
     isSearchLoading.value = true;
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
     if (query.contains(' ')) {
       if (nextPage.isEmpty) {
         baseURL =

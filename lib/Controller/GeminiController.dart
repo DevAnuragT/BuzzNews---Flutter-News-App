@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:news_app/Config/ApiKeys.dart';
+import 'package:news_app/Controller/SettingsController.dart';
 import 'package:news_app/Model/NewsModel.dart';
 import 'dart:convert';
 
 class GeminiController extends GetxController {
   RxBool geminiLoading = false.obs;
+  SettingsController settingsController=Get.put(SettingsController());
 
   final model = GenerativeModel(
     model: 'gemini-1.5-flash',
@@ -13,8 +15,10 @@ class GeminiController extends GetxController {
   );
 
   Future<String> getDescription(String query) async {
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+
     try {
-      final prompt = 'Describe the following news in 60-70 words: $query';
+      final prompt = 'Describe the following news in 60-70 words (language for response:$language): $query';
       final response = await model.generateContent([Content.text(prompt)]);
       return response.text!;
     } on GenerativeAIException catch (e) {
@@ -27,8 +31,10 @@ class GeminiController extends GetxController {
   }
 
   Future<String> getMoreInfo(String query) async {
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+
     try {
-      final prompt = 'Describe the following news in detail: $query';
+      final prompt = 'Describe the following news in detail (language for response:$language): $query';
       final response = await model.generateContent([Content.text(prompt)]);
       return response.text!;
     } on GenerativeAIException catch (e) {
@@ -41,12 +47,14 @@ class GeminiController extends GetxController {
   }
 
   Future<String> getSearchResult(List<NewsModel> newsList) async {
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+
     try {
       geminiLoading.value = true;
 
       // Convert the list of news items to a JSON string
       final newsJson = jsonEncode(newsList.map((news) => news.toJson()).toList());
-      final prompt = 'Provide a brief summary from the following news articles: $newsJson';
+      final prompt = 'Provide a brief summary from the following news articles (language for response:$language): $newsJson';
 
       final response = await model.generateContent([Content.text(prompt)]);
       geminiLoading.value = false;
@@ -64,12 +72,14 @@ class GeminiController extends GetxController {
   }
 
   Future<String> getHighlight(List<NewsModel> newsList) async {
+    String language = settingsController.selectedLanguage.value.substring(0,2).toLowerCase(); // Get the selected language
+
     try {
       geminiLoading.value = true;
 
       // Convert the list of news items to a JSON string
       final newsJson = jsonEncode(newsList.map((news) => news.toJson()).toList());
-      final prompt = 'Provide a brief highlight from the following news articles: $newsJson';
+      final prompt = 'Provide a brief highlight from the following news articles (language for response:$language): $newsJson';
 
       final response = await model.generateContent([Content.text(prompt)]);
       geminiLoading.value = false;

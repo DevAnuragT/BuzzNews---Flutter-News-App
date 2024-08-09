@@ -26,26 +26,35 @@ class AnimatedHighlightWidget extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.circular(30),
             boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 2,
-                blurRadius: 3,
-                offset: const Offset(0, 3),
-              ),
+              Theme.of(context).brightness == Brightness.light
+                ? BoxShadow(
+              color: Colors.blueAccent.withOpacity(0.4),
+              spreadRadius: 2,
+              blurRadius: 3,
+              offset: Offset(
+                  1, 3), // Adjusted shadow offset for a more natural look
+            )
+                : BoxShadow(
+              color: Colors.blueAccent.withOpacity(0.4),
+              spreadRadius: 3,
+              blurRadius: 5,
+              offset: Offset(
+                  1, 3), // Adjusted shadow offset for a more natural look
+            ),
             ],
           ),
-          child: Row(
+          child: const Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.auto_awesome,
                 color: Colors.blueAccent,
                 size: 30,
               ),
-              const SizedBox(width: 10),
-              const Text('Get highlights with'),
-              const SizedBox(width: 6),
-              const Text(
+              SizedBox(width: 10),
+              Text('Get highlights with',style: TextStyle(color: Colors.black54),),
+              SizedBox(width: 6),
+              Text(
                 'Gemini',
                 style: TextStyle(
                   color: Colors.blueAccent,
