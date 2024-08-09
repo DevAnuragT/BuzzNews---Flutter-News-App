@@ -13,6 +13,19 @@ import 'package:news_app/screens/home_page/widgets/TrendingLoading.dart';
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
+  final List<String> categories = [
+    'Top',
+    'Business',
+    'Technology',
+    'Politics',
+    'Entertainment',
+    'Sports',
+    'Crime',
+    'Education',
+    'Science',
+    // 'International'
+  ];
+
   @override
   Widget build(BuildContext context) {
     NewsController newsController = Get.put(NewsController());
@@ -85,7 +98,8 @@ class HomePage extends StatelessWidget {
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
-                            children: List.generate(3,
+                            children: List.generate(
+                              3,
                                   (index) => TrendingCardShimmer(),
                             ),
                           ),
@@ -140,6 +154,58 @@ class HomePage extends StatelessWidget {
                                 style: Theme.of(context).textTheme.labelSmall),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 8),
+                      SizedBox(
+                        height: 90, // Adjust height as needed
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: categories.length,
+                          itemBuilder: (context, index) {
+                            final category = categories[index];
+                            // final imageName = category == 'International'
+                            //     ? 'international.jpg'
+                            //     : '${category.toLowerCase()}.png';
+                            final imageName='${category.toLowerCase()}.png';
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Get.to(
+                                          () => FeedPage(category: category));
+                                },
+                                child: Stack(
+                                  alignment: Alignment.center,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 40,
+                                      backgroundImage: AssetImage(
+                                        'assets/Categories/$imageName',
+                                      ),
+                                    ),
+                                    Container(
+                                      height: 80,
+                                      width: 80,
+                                      decoration: BoxDecoration(
+                                        color: Colors.black.withOpacity(0.3), // Black layer with 50% opacity
+                                        borderRadius: BorderRadius.circular(40),
+                                      ),
+                                    ),
+                                    Text(
+                                      category,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 12,
+                                        //backgroundColor: Colors.black38,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                       const SizedBox(height: 10),
                       Obx(() {

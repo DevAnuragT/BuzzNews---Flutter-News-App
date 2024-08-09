@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:news_app/Controller/NewsController.dart';
 import 'package:news_app/screens/home_page/GeminiHighlight.dart';
 
-import '../../../Model/NewsModel.dart';
 
 class AnimatedHighlightWidget extends StatelessWidget {
   final NewsController newsController;
