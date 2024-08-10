@@ -42,7 +42,7 @@ class _DetailedDescriptionPageState extends State<DetailedDescriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor: Colors.grey.withOpacity(0.3),
         leading: Row(
           children: [
             const SizedBox(width: 12),
@@ -66,6 +66,7 @@ class _DetailedDescriptionPageState extends State<DetailedDescriptionPage> {
         ),
       ),
       body: Container(
+        height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -80,17 +81,25 @@ class _DetailedDescriptionPageState extends State<DetailedDescriptionPage> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Obx(
-            () => Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: isLoading.value
-                  ? GeminiLoading(20)
-                  : MarkdownBody(
-                      data: moreInfo.value,
-                      styleSheet: MarkdownStyleSheet(
-                        h2: Theme.of(context).textTheme.headlineMedium,
-                        strong: const TextStyle(fontWeight: FontWeight.bold),
+            () => Container(
+              margin: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.white70.withOpacity(0.4),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: isLoading.value
+                    ? GeminiLoading(20)
+                    : MarkdownBody(
+                        data: moreInfo.value,
+                        styleSheet: MarkdownStyleSheet(
+                          p: TextStyle(color: Colors.black),
+                          h2: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black),
+                          strong: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    ),
+              ),
             ),
           ),
         ),

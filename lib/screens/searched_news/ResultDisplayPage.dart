@@ -98,19 +98,30 @@ class ResultPage extends StatelessWidget {
                         ),
                         padding: EdgeInsets.all(16.0),
                         margin: EdgeInsets.symmetric(vertical: 10.0),
-                        child: Column(
-                          children: [
-                            Text('Gemini Search',style: Theme.of(context).textTheme.headlineLarge,),
-                            SizedBox(height: 10,),
-                            MarkdownBody(
-                            data: snapshot.data!,
-                            styleSheet: MarkdownStyleSheet(
-                              h2: Theme.of(context).textTheme.headlineMedium,
-                              strong: const TextStyle(fontWeight: FontWeight.bold),
+                        child: Column(children: [
+                          Text(
+                            'Gemini Search',
+                            style: Theme.of(context).textTheme.headlineLarge,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: Colors.white70.withOpacity(0.4),
+                            ),
+                            padding: EdgeInsets.all(15),
+                            child: MarkdownBody(
+                              data: snapshot.data!,
+                              styleSheet: MarkdownStyleSheet(
+                                h2: Theme.of(context).textTheme.headlineMedium,
+                                strong:
+                                    const TextStyle(fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-              ]
-                        ),
+                        ]),
                       ),
                       SizedBox(height: 10),
                       ListView.builder(
@@ -118,9 +129,11 @@ class ResultPage extends StatelessWidget {
                         physics: NeverScrollableScrollPhysics(),
                         itemCount: searchController.searchedNewsList.length + 1,
                         itemBuilder: (context, index) {
-                          if (index == searchController.searchedNewsList.length) {
+                          if (index ==
+                              searchController.searchedNewsList.length) {
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 6.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6.0),
                               child: ElevatedButton(
                                 onPressed: () {
                                   searchController.searchNews(query);
@@ -131,11 +144,13 @@ class ResultPage extends StatelessWidget {
                           } else {
                             var e = searchController.searchedNewsList[index];
                             return Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: NewsTile(
                                 onTap: () {
                                   Get.to(
-                                        () => ArticlePage(news: e, showBack: true.obs),
+                                    () => ArticlePage(
+                                        news: e, showBack: true.obs),
                                     transition: Transition.rightToLeft,
                                   );
                                 },
@@ -183,10 +198,18 @@ class GeminiLoadingContainer extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(children: [
-        SizedBox(height: 15,),
-        Text('Gemini Search',style: Theme.of(context).textTheme.headlineLarge,),
-        SizedBox(height: 10,),
-        GeminiLoading(8)]),
+        SizedBox(
+          height: 15,
+        ),
+        Text(
+          'Gemini Search',
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        GeminiLoading(8)
+      ]),
     );
   }
 }

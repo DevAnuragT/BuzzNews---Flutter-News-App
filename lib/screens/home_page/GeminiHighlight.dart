@@ -54,13 +54,19 @@ class GeminiHighlight extends StatelessWidget {
                   } else if (snapshot.hasError) {
                     return Center(child: Text('An error occurred: ${snapshot.error}'));
                   } else if (snapshot.hasData) {
-                    return Padding(
+                    return Container(
+                      margin: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.white70.withOpacity(0.4),
+                      ),
                         padding: const EdgeInsets.all(15),
                         child: SingleChildScrollView(
                           child: MarkdownBody(
                             data: snapshot.data ?? "No highlight available",
                             styleSheet: MarkdownStyleSheet(
                               h2: Theme.of(context).textTheme.headlineMedium,
+                                p:TextStyle(color: Colors.black87),
                               strong: const TextStyle(fontWeight: FontWeight.bold),
                             ),
                           ),
