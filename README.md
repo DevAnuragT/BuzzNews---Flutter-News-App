@@ -41,7 +41,7 @@ BuzzNews uses the following Flutter packages:
 
 ## Demo
 
-Watch a video of the app in action: [BuzzNews App Demo](https://youtu.be/azluSnlKGkg)
+Watch a video of the app in action: [BuzzNews App Demo](https://youtu.be/v_Je8wAkVBc)
 
 ## Screenshots
 
