@@ -13,7 +13,7 @@ BuzzNews is a modern, *Gemini* integrated news application designed to keep user
 - **Seamless Navigation**: Intuitive and user-friendly interface with easy navigation between different sections.
 - **No Offline Support**: BuzzNews requires an active internet connection to function. It does not support offline usage.
 
-## API Integration
+## API Integration (Gemini & NewsData.io)
 
 BuzzNews leverages the [Gemini API](https://ai.google.dev/gemini-api/docs
 ) to enhance the user experience in the following ways:
