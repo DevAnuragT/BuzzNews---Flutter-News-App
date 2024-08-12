@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_app/screens/article_page/widgets/GeminiLoading.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../Controller/GeminiController.dart';
 import 'MoreInfo.dart';
@@ -48,89 +49,75 @@ class _GeminiBottomSheetState extends State<GeminiBottomSheet> {
           colors: [
             Colors.blueAccent.shade100,
             Colors.lightBlueAccent.shade100,
-            Colors.deepPurple.shade100
+            Colors.deepPurple.shade200
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Gemini Description',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            isLoading
-                ? _buildShimmerEffect(context)
-                : Stack(
-              children: [
-                // Text with border (stroke)
-                Text(
-                  description ?? "No description available.",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    fontWeight: FontWeight.bold,
-                    foreground: Paint()
-                      ..style = PaintingStyle.stroke
-                      ..strokeWidth =  1
-                      ..color = Colors.black38, // Border color
-                  ),
-                ),
-                // Text with fill color
-                Text(
-                  description ?? "No description available.",
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                    color: Colors.white, // Fill color
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            isLoading?
-             SizedBox()
-            :TextButton(
-              onPressed: () {
-                Get.to(() => DetailedDescriptionPage(description: description!));
-              },
-              child: const Text(
-                'Know More',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerEffect(BuildContext context) {
-    return Shimmer.fromColors(
-      baseColor: Colors.grey.shade100,
-      highlightColor: Colors.white70,
       child: Column(
-        children: List.generate(6, (index) => _buildShimmerLine(context)),
-      ),
-    );
-  }
-
-  Widget _buildShimmerLine(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white
-        ),
-        width: double.infinity,
-        height: 20,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(12),
+            child: Text(
+              'Gemini Description',
+              style:
+                  Theme.of(context).textTheme.bodyLarge!.copyWith(fontSize: 21),
+            ),
+          ),
+          const SizedBox(height: 8),
+          isLoading
+              ? GeminiLoading(6)
+              : Container(
+                  padding: EdgeInsets.all(10),
+                  margin: EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: Colors.white70.withOpacity(0.4),
+                  ),
+                  child: Text(
+                    description ?? "No description available.",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(color: Colors.black),
+                  ),
+                ),
+          const SizedBox(height: 8),
+          isLoading
+              ? Shimmer.fromColors(
+                  baseColor: Colors.grey.shade100,
+                  highlightColor: Colors.white70,
+            child: Container(
+              height: 10,
+              width: 80,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white
+              ),
+              padding: EdgeInsets.all(10),
+              margin: EdgeInsets.all(10),
+            ),
+                )
+              : TextButton(
+                  onPressed: () {
+                    Get.to(() =>
+                        DetailedDescriptionPage(description: description!));
+                  },
+                  child: const Text(
+                    'Know More',
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+          SizedBox(
+            height: 5,
+          )
+        ],
       ),
     );
   }

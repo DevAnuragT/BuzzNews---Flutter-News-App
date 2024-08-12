@@ -115,7 +115,8 @@ class ResultPage extends StatelessWidget {
                             child: MarkdownBody(
                               data: snapshot.data!,
                               styleSheet: MarkdownStyleSheet(
-                                h2: Theme.of(context).textTheme.headlineMedium,
+                                h2: Theme.of(context).textTheme.headlineMedium!.copyWith(color: Colors.black),
+                                p: TextStyle(color: Colors.black),
                                 strong:
                                     const TextStyle(fontWeight: FontWeight.bold),
                               ),

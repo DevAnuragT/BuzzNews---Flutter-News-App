@@ -81,26 +81,24 @@ class _DetailedDescriptionPageState extends State<DetailedDescriptionPage> {
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Obx(
-            () => Container(
+            () => isLoading.value
+                ? GeminiLoading(20)
+                : Container(
               margin: EdgeInsets.all(12),
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.white70.withOpacity(0.4),
               ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: isLoading.value
-                    ? GeminiLoading(20)
-                    : MarkdownBody(
-                        data: moreInfo.value,
-                        styleSheet: MarkdownStyleSheet(
-                          p: TextStyle(color: Colors.black),
-                          h2: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black),
-                          strong: const TextStyle(fontWeight: FontWeight.bold),
-                        ),
+                  child: MarkdownBody(
+                      data: moreInfo.value,
+                      styleSheet: MarkdownStyleSheet(
+                        p: TextStyle(color: Colors.black),
+                        h2: Theme.of(context).textTheme.headlineMedium?.copyWith(color: Colors.black),
+                        strong: const TextStyle(fontWeight: FontWeight.bold),
                       ),
-              ),
-            ),
+                    ),
+                ),
           ),
         ),
       ),

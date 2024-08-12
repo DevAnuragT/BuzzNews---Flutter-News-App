@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       title: 'BuzzNews',
       theme: lightTheme,
       darkTheme: darkTheme,
+      debugShowCheckedModeBanner: false,
       themeMode:ThemeMode.system,
       home: HomePageController(),
     );
