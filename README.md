@@ -1,16 +1,43 @@
-# news_app
 
-A new Flutter project.
+# BuzzNews
 
-## Getting Started
+BuzzNews is a modern, *Gemini* integrated news application designed to keep users informed with the latest news from around the world. With a wide range of categories and powerful content generation tools, BuzzNews delivers a personalized and engaging news experience.
 
-This project is a starting point for a Flutter application.
+## Features
 
-A few resources to get you started if this is your first Flutter project:
+- **News Updates**: Get the latest news across various categories including Technology, Business, Sports, Entertainment, and more.
+- **Personalized News Feed**: Customize your news feed based on your preferred language and country.
+- **Article Descriptions**: Summarized and informative descriptions of news articles generated using the Gemini API.
+- **Daily Highlights**: Quick access to the most important news events of the day, curated and enhanced by the Gemini API.
+- **Search Functionality**: Find specific news articles and topics with ease, powered by the Gemini API to deliver relevant summaries.
+- **Seamless Navigation**: Intuitive and user-friendly interface with easy navigation between different sections.
+- **No Offline Support**: BuzzNews requires an active internet connection to function. It does not support offline usage.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## API Integration
+
+BuzzNews leverages the [Gemini API](https://example.com/gemini-api-docs) to enhance the user experience in the following ways:
+
+1. **Article Descriptions**: The Gemini API generates short, informative descriptions for each news article, helping users quickly understand the content.
+2. **Daily Highlights**: Every day, the Gemini API curates a list of highlights, giving users an overview of the most critical news events.
+3. **Search Summaries**: When users search for specific topics, the Gemini API processes the results to present the most relevant and concise summaries.
+
+## Usage
+
+- **Settings**: Users can customize their language and country preferences in the settings page. For nor Hindi is not available.
+- **Navigation**: The app uses a bottom navigation bar for easy access to different sections, including the Feed, Search and Home.
+- **Swipeable News**: Swipe through articles in the Feed page for a smooth reading experience.
+
+## Dependencies
+
+BuzzNews uses the following Flutter packages:
+
+- `GetX`: For state management.
+- `http`: For making API requests.
+- `flutter_markdown`: For rendering markdown content.
+- `shared_preferences`: For storing user preferences.
+- `google_generative_ai`: For Integrating Gemini.
+- `shimmer`: For cool loading animation.
+
+
+---
