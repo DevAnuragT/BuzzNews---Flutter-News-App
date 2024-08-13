@@ -1,4 +1,6 @@
 
-const String geminiKey = 'AIzaSyCFlPLJmWqV67dksK2FOAViuxg2JqxfVYo';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-const String newsKey = 'pub_5000780216d8deb17f00cbb6b863c57dc4088';
+String geminiKey = '${dotenv.env['GEMINI_KEY']}';
+
+String newsKey = '${dotenv.env['NEWS_KEY']}';
