@@ -110,13 +110,13 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: Assets/Fonts/Poppins-Light.ttf
+        - asset: assets/Fonts/Poppins-Light.ttf
           weight: 300
-        - asset: Assets/Fonts/Poppins-Regular.ttf
+        - asset: assets/Fonts/Poppins-Regular.ttf
           weight: 400
-        - asset: Assets/Fonts/Poppins-Medium.ttf
+        - asset: assets/Fonts/Poppins-Medium.ttf
           weight: 500
-        - asset: Assets/Fonts/Poppins-Bold.ttf
+        - asset: assets/Fonts/Poppins-Bold.ttf
           weight: 700
     - family: SFRounded
       fonts:
